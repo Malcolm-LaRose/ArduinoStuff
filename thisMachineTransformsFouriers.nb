@@ -1,0 +1,362 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 12.2' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     13385,        354]
+NotebookOptionsPosition[     12205,        325]
+NotebookOutlinePosition[     12643,        342]
+CellTagsIndexPosition[     12600,        339]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"fouriezer", "[", 
+   RowBox[{"rawData_", ",", "samplingTimeinMilliseconds_"}], "]"}], ":=", 
+  RowBox[{"Module", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{
+     "timeData", ",", "timeSeries", ",", "spec", ",", "dt", ",", "fs", ",", 
+      "n", ",", "time", ",", "alpha", ",", "window", ",", "windowData", ",", 
+      "windowSpec", ",", "freqs", ",", "fourierPlot", ",", 
+      "lowFreqFourierPlot", ",", "longPeriodPlot"}], "}"}], ",", 
+    "\[IndentingNewLine]", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"timeData", "=", 
+      RowBox[{"Table", "[", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"samplingTimeinMilliseconds", "*", "i"}], ",", 
+          RowBox[{"rawData", "[", 
+           RowBox[{"[", 
+            RowBox[{"i", "+", "1"}], "]"}], "]"}]}], "}"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"i", ",", "0", ",", 
+          RowBox[{
+           RowBox[{"Length", "[", "rawData", "]"}], "-", "1"}]}], "}"}]}], 
+       "]"}]}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+     RowBox[{"spec", "=", 
+      RowBox[{"Abs", "[", 
+       RowBox[{"Fourier", "[", "rawData", "]"}], "]"}]}], ";", 
+     "\[IndentingNewLine]", "\[IndentingNewLine]", 
+     RowBox[{"dt", "=", 
+      RowBox[{"samplingTimeinMilliseconds", "/", "1000."}]}], 
+     RowBox[{"(*", "seconds", "*)"}], ";", "\[IndentingNewLine]", 
+     RowBox[{"fs", "=", 
+      RowBox[{"1", "/", "dt"}]}], ";", "\n", "     ", 
+     RowBox[{"n", "=", 
+      RowBox[{"Length", "[", "rawData", "]"}]}], ";", "\[IndentingNewLine]", 
+     RowBox[{"time", " ", "=", " ", 
+      RowBox[{"n", "*", "dt"}]}], ";", "\[IndentingNewLine]", 
+     "\[IndentingNewLine]", 
+     RowBox[{"alpha", "=", "0.9"}], ";", "\[IndentingNewLine]", 
+     RowBox[{"window", "=", 
+      RowBox[{"Table", "[", 
+       RowBox[{
+        RowBox[{"alpha", "-", 
+         RowBox[{"(", 
+          RowBox[{
+           RowBox[{"(", 
+            RowBox[{"1", "-", "alpha"}], ")"}], "*", 
+           RowBox[{"Cos", "[", 
+            RowBox[{
+             RowBox[{"(", 
+              RowBox[{"2", " ", "Pi", " ", "i"}], ")"}], "/", 
+             RowBox[{"(", 
+              RowBox[{"n", "-", "1"}], ")"}]}], "]"}]}], ")"}]}], ",", 
+        RowBox[{"{", 
+         RowBox[{"i", ",", "0", ",", 
+          RowBox[{"n", "-", "1"}]}], "}"}]}], "]"}]}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{"windowData", "=", 
+      RowBox[{
+       RowBox[{"(", 
+        RowBox[{"rawData", "-", 
+         RowBox[{"Mean", "[", "rawData", "]"}]}], ")"}], "*", "window"}]}], 
+     ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+     RowBox[{"windowSpec", "=", 
+      RowBox[{"Abs", "[", 
+       RowBox[{"Fourier", "[", "windowData", "]"}], "]"}]}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{"freqs", "=", 
+      RowBox[{"Range", "[", 
+       RowBox[{"0", ",", 
+        RowBox[{"fs", " ", 
+         RowBox[{
+          RowBox[{"(", 
+           RowBox[{"n", "-", "1"}], ")"}], "/", "n"}]}], ",", 
+        RowBox[{"fs", "/", "n"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+     "\[IndentingNewLine]", 
+     RowBox[{"timeSeries", "=", 
+      RowBox[{"ListLinePlot", "[", 
+       RowBox[{"timeData", ",", 
+        RowBox[{"ImageSize", "\[Rule]", "1200"}], ",", 
+        RowBox[{"Frame", "\[Rule]", "True"}], ",", 
+        RowBox[{"FrameLabel", "\[Rule]", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{"\"\<V(t)\>\"", ",", "None"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"\"\<Time [ms]\>\"", ",", 
+             RowBox[{
+              RowBox[{"ToString", "[", "time", "]"}], "<>", "\"\< sec\\n\>\"",
+               "<>", 
+              RowBox[{"ToString", "[", "fs", "]"}], "<>", 
+              "\"\< Hz sampling\>\""}]}], "}"}]}], "}"}]}], ",", 
+        RowBox[{"LabelStyle", "\[Rule]", 
+         RowBox[{"FontSize", "\[Rule]", "24"}]}]}], "]"}]}], ";", 
+     "\[IndentingNewLine]", "\[IndentingNewLine]", 
+     RowBox[{"fourierPlot", "=", 
+      RowBox[{"ListLinePlot", "[", 
+       RowBox[{
+        RowBox[{"Drop", "[", 
+         RowBox[{
+          RowBox[{"Transpose", "[", 
+           RowBox[{"{", 
+            RowBox[{"freqs", ",", "windowSpec"}], "}"}], "]"}], ",", "25"}], 
+         "]"}], ",", 
+        RowBox[{"ScalingFunctions", "\[Rule]", 
+         RowBox[{"{", 
+          RowBox[{"\"\<Linear\>\"", ",", "\"\<Log\>\""}], "}"}]}], ",", 
+        RowBox[{"PlotRange", "\[Rule]", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{"0", ",", 
+             RowBox[{"fs", "/", "2"}]}], "}"}], ",", "All"}], "}"}]}], ",", 
+        RowBox[{"ImageSize", "\[Rule]", "1200"}], ",", 
+        RowBox[{"Frame", "\[Rule]", "True"}], ",", 
+        RowBox[{"FrameLabel", "\[Rule]", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{"\"\<F(t)\>\"", ",", "None"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"\"\<Freq. [Hz]\>\"", ",", 
+             RowBox[{
+              RowBox[{"ToString", "[", "time", "]"}], "<>", "\"\< sec\\n\>\"",
+               "<>", 
+              RowBox[{"ToString", "[", "fs", "]"}], "<>", 
+              "\"\< Hz sampling\>\""}]}], "}"}]}], "}"}]}], ",", 
+        RowBox[{"LabelStyle", "\[Rule]", 
+         RowBox[{"FontSize", "\[Rule]", "24"}]}], ",", 
+        RowBox[{"GridLines", "\[Rule]", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"Table", "[", 
+            RowBox[{"i", ",", 
+             RowBox[{"{", 
+              RowBox[{"i", ",", "0", ",", 
+               RowBox[{"fs", "/", "2"}], ",", "10"}], "}"}]}], "]"}], ",", 
+           "Automatic"}], "}"}]}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+     "\[IndentingNewLine]", 
+     RowBox[{"lowFreqFourierPlot", "=", 
+      RowBox[{"ListLinePlot", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"Transpose", "[", 
+          RowBox[{"{", 
+           RowBox[{"freqs", ",", "windowSpec"}], "}"}], "]"}], "//", "Rest"}],
+         ",", 
+        RowBox[{"ScalingFunctions", "\[Rule]", 
+         RowBox[{"{", 
+          RowBox[{"\"\<Linear\>\"", ",", "\"\<Log\>\""}], "}"}]}], ",", 
+        RowBox[{"PlotRange", "\[Rule]", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{"0", ",", 
+             RowBox[{"fs", "/", "1024"}]}], "}"}], ",", "All"}], "}"}]}], ",", 
+        RowBox[{"ImageSize", "\[Rule]", "1200"}], ",", 
+        RowBox[{"Frame", "\[Rule]", "True"}], ",", 
+        RowBox[{"FrameLabel", "\[Rule]", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{"\"\<F(t)\>\"", ",", "None"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"\"\<Freq. [Hz]\>\"", ",", 
+             RowBox[{
+              RowBox[{"ToString", "[", "time", "]"}], "<>", "\"\< sec\\n\>\"",
+               "<>", 
+              RowBox[{"ToString", "[", "fs", "]"}], "<>", 
+              "\"\< Hz sampling\>\""}]}], "}"}]}], "}"}]}], ",", 
+        RowBox[{"LabelStyle", "\[Rule]", 
+         RowBox[{"FontSize", "\[Rule]", "24"}]}], ",", 
+        RowBox[{"GridLines", "\[Rule]", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"Table", "[", 
+            RowBox[{"i", ",", 
+             RowBox[{"{", 
+              RowBox[{"i", ",", "0", ",", 
+               RowBox[{"fs", "/", "256"}], ",", "0.02"}], "}"}]}], "]"}], ",",
+            "Automatic"}], "}"}]}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+     "\[IndentingNewLine]", 
+     RowBox[{"longPeriodPlot", "=", 
+      RowBox[{"ListLinePlot", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"Transpose", "[", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"1", "/", "freqs"}], ",", "windowSpec"}], "}"}], "]"}], "//",
+          "Rest"}], ",", 
+        RowBox[{"ScalingFunctions", "\[Rule]", 
+         RowBox[{"{", 
+          RowBox[{"\"\<Log\>\"", ",", "\"\<Log\>\""}], "}"}]}], ",", 
+        RowBox[{"PlotRange", "\[Rule]", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{"0", ",", 
+             RowBox[{"time", "/", "2"}]}], "}"}], ",", "All"}], "}"}]}], ",", 
+        RowBox[{"ImageSize", "\[Rule]", "1200"}], ",", 
+        RowBox[{"Frame", "\[Rule]", "True"}], ",", 
+        RowBox[{"FrameLabel", "\[Rule]", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{"\"\<F(t)\>\"", ",", "None"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"\"\<Period. [s]\>\"", ",", 
+             RowBox[{
+              RowBox[{"ToString", "[", "time", "]"}], "<>", "\"\< sec\\n\>\"",
+               "<>", 
+              RowBox[{"ToString", "[", "fs", "]"}], "<>", 
+              "\"\< Hz sampling\>\""}]}], "}"}]}], "}"}]}], ",", 
+        RowBox[{"LabelStyle", "\[Rule]", 
+         RowBox[{"FontSize", "\[Rule]", "24"}]}], ",", 
+        RowBox[{"GridLines", "\[Rule]", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"Table", "[", 
+            RowBox[{"i", ",", 
+             RowBox[{"{", 
+              RowBox[{"i", ",", "1", ",", "20", ",", "1"}], "}"}]}], "]"}], 
+           ",", "Automatic"}], "}"}]}]}], "]"}]}], ";", "\[IndentingNewLine]",
+      "\[IndentingNewLine]", 
+     RowBox[{"Return", "[", 
+      RowBox[{"{", 
+       RowBox[{
+       "timeSeries", ",", "fourierPlot", ",", "lowFreqFourierPlot", ",", 
+        "longPeriodPlot"}], "}"}], "]"}]}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ InitializationCell->True,
+ CellChangeTimes->{{3.993387069400135*^9, 3.9933871822242904`*^9}, {
+   3.9933872312340393`*^9, 3.9933873387332125`*^9}, {3.9933874763935633`*^9, 
+   3.9933876614838843`*^9}, 3.993387804649623*^9, {3.993387905092563*^9, 
+   3.9933879198774705`*^9}, {3.99338828766363*^9, 
+   3.9933882913950863`*^9}},ExpressionUUID->"97513547-ff56-49fb-9242-\
+30f539de1286"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"SetDirectory", "[", "\"\<D:\\\\ArduinoDump\\\\\>\"", "]"}]], "Input",
+ CellLabel->
+  "In[232]:=",ExpressionUUID->"de255aa3-e175-4971-91ae-af2692b198a4"],
+
+Cell[BoxData["\<\"D:\\\\ArduinoDump\"\>"], "Output",
+ CellChangeTimes->{3.99338768024774*^9},
+ CellLabel->
+  "Out[232]=",ExpressionUUID->"40416d82-542e-4108-ac3d-1d70c6c25b6f"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"dataFile", "=", 
+  RowBox[{
+   RowBox[{"FileNames", "[", 
+    RowBox[{"\"\<*.txt\>\"", ",", "\"\<D:\\\\ArduinoDump\>\""}], "]"}], "[", 
+   RowBox[{"[", "1", "]"}], "]"}]}]], "Input",
+ CellLabel->
+  "In[233]:=",ExpressionUUID->"cb9e7d8e-e294-4136-a38a-c3d30a81f7e5"],
+
+Cell[BoxData["\<\"D:\\\\ArduinoDump\\\\data.txt\"\>"], "Output",
+ CellChangeTimes->{3.9933876817274*^9},
+ CellLabel->
+  "Out[233]=",ExpressionUUID->"c36d98fe-182a-4768-a259-c1325c3dd0b7"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"data", "=", 
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{
+       RowBox[{
+        RowBox[{"Import", "[", 
+         RowBox[{"dataFile", ",", "\"\<Table\>\""}], "]"}], "//", "Rest"}], "//",
+        "Rest"}], "//", "Transpose"}], ")"}], "[", 
+    RowBox[{"[", "1", "]"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{"data", "//", "Length"}]}], "Input",
+ CellLabel->
+  "In[239]:=",ExpressionUUID->"2efd7e5c-8abb-4fad-8d95-e4c8ba142643"],
+
+Cell[BoxData["1892798"], "Output",
+ CellChangeTimes->{3.9933876894826117`*^9, 3.993388205882489*^9},
+ CellLabel->
+  "Out[240]=",ExpressionUUID->"45ac9c49-9dc0-4912-acbf-9fcf84438686"]
+}, Open  ]],
+
+Cell[BoxData[
+ RowBox[{"fouriezer", "[", 
+  RowBox[{"data", ",", "2"}], "]"}]], "Input",
+ CellChangeTimes->{{3.9933876986996326`*^9, 3.9933877020968013`*^9}},
+ CellLabel->
+  "In[241]:=",ExpressionUUID->"f48f07b1-194c-44d8-bf47-e1823a7eb628"]
+},
+WindowSize->{958., 1005.5},
+WindowMargins->{{-6.75, Automatic}, {Automatic, 0}},
+Magnification:>0.8 Inherited,
+FrontEndVersion->"12.2 for Microsoft Windows (64-bit) (December 12, 2020)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"8a48d76f-f1a6-4c85-b1ad-5347a0bd7dfb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 9781, 242, 606, "Input",ExpressionUUID->"97513547-ff56-49fb-9242-30f539de1286",
+ InitializationCell->True],
+Cell[CellGroupData[{
+Cell[10364, 266, 176, 3, 22, "Input",ExpressionUUID->"de255aa3-e175-4971-91ae-af2692b198a4"],
+Cell[10543, 271, 176, 3, 25, "Output",ExpressionUUID->"40416d82-542e-4108-ac3d-1d70c6c25b6f"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[10756, 279, 289, 7, 22, "Input",ExpressionUUID->"cb9e7d8e-e294-4136-a38a-c3d30a81f7e5"],
+Cell[11048, 288, 187, 3, 25, "Output",ExpressionUUID->"c36d98fe-182a-4768-a259-c1325c3dd0b7"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[11272, 296, 487, 14, 38, "Input",ExpressionUUID->"2efd7e5c-8abb-4fad-8d95-e4c8ba142643"],
+Cell[11762, 312, 183, 3, 25, "Output",ExpressionUUID->"45ac9c49-9dc0-4912-acbf-9fcf84438686"]
+}, Open  ]],
+Cell[11960, 318, 241, 5, 22, "Input",ExpressionUUID->"f48f07b1-194c-44d8-bf47-e1823a7eb628"]
+}
+]
+*)
+
