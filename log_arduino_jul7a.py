@@ -56,4 +56,4 @@ with open(filename_txt) as f:
 calculatedRefreshRate = sample_count / elapsed_time    
 
 print(f"Saved {sample_count} samples to {filename_txt} at {calculatedRefreshRate:.3f} samples/sec")
-print(f"Intended speed different from calculated speed by {intendedRefreshRate-calculatedRefreshRate/(intendedRefreshRate)*100:.6f} %")
+print(f"Intended speed different from calculated speed by {((intendedRefreshRate-calculatedRefreshRate)/intendedRefreshRate)*100:.6f} %")
