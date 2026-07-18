@@ -3,7 +3,7 @@ import time
 import numpy as np
 
 PORT = "COM3"
-BAUD = 500000
+BAUD = 1000000
 
 ser = serial.Serial(PORT, BAUD, timeout=0.1)
 time.sleep(3)
@@ -27,7 +27,7 @@ with open(filename_txt, "w") as f:
                 raw = np.frombuffer(data, dtype=np.int16)[0]
                 voltage = raw * V_PER_COUNT
             
-                if printCount % 4 == 0:
+                if printCount % 5 == 0:
                     print(f"{voltage:.5f}")
 
                 f.write(f"{voltage:.5f}\n")
