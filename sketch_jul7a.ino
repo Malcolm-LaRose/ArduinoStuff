@@ -2,7 +2,7 @@
 #include <Wire.h>
 
 unsigned long nextRead = 0;
-const int readInterval = 2000; // milliseconds
+const int readInterval = 1500; // microseconds (1163 minimum for this board)
 
 Adafruit_ADS1115 ads1115;
 
