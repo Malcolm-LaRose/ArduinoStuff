@@ -4,7 +4,7 @@ import numpy as np
 
 PORT = "COM3"
 BAUD = 1000000
-intendedSpeed = 1.800 # milliseconds
+intendedSpeed = 1.768 # milliseconds
 intendedRefreshRate = 1/(intendedSpeed/1000) 
 
 bottleneckThreshold = 0.1 # percent
@@ -33,11 +33,12 @@ with open(filename_txt, "w") as f:
                 raw = np.frombuffer(data, dtype=np.int16)[0]
                 voltage = raw * V_PER_COUNT
             
+                f.write(f"{voltage:.5f}\n")
+                end_time = time.perf_counter()
+            
                 if printCount % printRefreshRate == 0:
                     print(f"{voltage:.5f}")
 
-                f.write(f"{voltage:.5f}\n")
-                end_time = time.perf_counter()
                 printCount += 1
                 # f.flush()   # Leave this commented unless you need immediate disk writes
 
