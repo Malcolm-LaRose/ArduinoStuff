@@ -60,7 +60,7 @@ print(f"Saved {sample_count} samples to {filename_txt} at {calculatedRefreshRate
 print(f"Intended speed ({intendedRefreshRate:.3f}) different from calculated speed by {refreshRatePercentDifference:.4f} %")
 
 
-if refreshRatePercentDifference > bottleneckThreshold:
+if np.abs(refreshRatePercentDifference) > bottleneckThreshold:
     print("\033[91mBOTTLENECK DETECTED\033[0m")
 else:
     print("\033[92mNO BOTTLENECK DETECTED\033[0m")
