@@ -2,7 +2,7 @@
 #include <Wire.h>
 
 unsigned long nextRead = 0;
-const int readInterval = 1800; // microseconds (1163 theoretical minimum for this board, practical ~1800)
+const int readInterval = 1800; // microseconds (1163 theoretical minimum for this board, practical ~1800, stable threshold ~1772)
 
 // If you notice the calculated sampling rate =/= programmed sampling rate, slow down or investigate bottleneck
 // Bottleneck probably ADC or python, not really sure
