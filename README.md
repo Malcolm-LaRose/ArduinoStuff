@@ -14,6 +14,8 @@ Mathematica for more detailed fourier fun
 
 Highest observed stable timing ~555Hz with jul7a pipeline
 
+Highest capable stable timing from jul18 high speed test
+
 
 
 Future stuff:
