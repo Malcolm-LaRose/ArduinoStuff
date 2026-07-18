@@ -13,7 +13,11 @@ livetest for the same with multithreading --> use jul7b
 Mathematica for more detailed fourier fun
 
 
+
 Future stuff:
+
 ino and python for max speed ads1115 reading and timing
+
 similar stuff for the 24bit adc
+
 better names
