@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       158,          7]
-NotebookDataLength[     13385,        354]
-NotebookOptionsPosition[     12205,        325]
-NotebookOutlinePosition[     12643,        342]
-CellTagsIndexPosition[     12600,        339]
+NotebookDataLength[     13581,        359]
+NotebookOptionsPosition[     12400,        330]
+NotebookOutlinePosition[     12839,        347]
+CellTagsIndexPosition[     12796,        344]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -294,7 +294,7 @@ Cell[BoxData["\<\"D:\\\\ArduinoDump\\\\data.txt\"\>"], "Output",
 
 Cell[CellGroupData[{
 
-Cell[BoxData[{
+Cell[BoxData[
  RowBox[{
   RowBox[{"data", "=", 
    RowBox[{
@@ -305,10 +305,15 @@ Cell[BoxData[{
         RowBox[{"Import", "[", 
          RowBox[{"dataFile", ",", "\"\<Table\>\""}], "]"}], "//", "Rest"}], "//",
         "Rest"}], "//", "Transpose"}], ")"}], "[", 
-    RowBox[{"[", "1", "]"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
- RowBox[{"data", "//", "Length"}]}], "Input",
- CellLabel->
-  "In[239]:=",ExpressionUUID->"2efd7e5c-8abb-4fad-8d95-e4c8ba142643"],
+    RowBox[{"[", "1", "]"}], "]"}]}], ";", " ", 
+  RowBox[{"(*", " ", 
+   RowBox[{
+   "Use", " ", "2", " ", "for", " ", "data", " ", "saved", " ", "with", " ", 
+    "timeStamps"}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{"data", "//", "Length"}]}]], "Input",
+ CellChangeTimes->{{3.9933930195277348`*^9, 
+  3.993393039922728*^9}},ExpressionUUID->"2efd7e5c-8abb-4fad-8d95-\
+e4c8ba142643"],
 
 Cell[BoxData["1892798"], "Output",
  CellChangeTimes->{3.9933876894826117`*^9, 3.993388205882489*^9},
@@ -323,8 +328,8 @@ Cell[BoxData[
  CellLabel->
   "In[241]:=",ExpressionUUID->"f48f07b1-194c-44d8-bf47-e1823a7eb628"]
 },
-WindowSize->{958., 1005.5},
-WindowMargins->{{-6.75, Automatic}, {Automatic, 0}},
+WindowSize->{958., 483.5},
+WindowMargins->{{Automatic, -4.5}, {-4.5, Automatic}},
 Magnification:>0.8 Inherited,
 FrontEndVersion->"12.2 for Microsoft Windows (64-bit) (December 12, 2020)",
 StyleDefinitions->"Default.nb",
@@ -352,10 +357,10 @@ Cell[10756, 279, 289, 7, 22, "Input",ExpressionUUID->"cb9e7d8e-e294-4136-a38a-c3
 Cell[11048, 288, 187, 3, 25, "Output",ExpressionUUID->"c36d98fe-182a-4768-a259-c1325c3dd0b7"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[11272, 296, 487, 14, 38, "Input",ExpressionUUID->"2efd7e5c-8abb-4fad-8d95-e4c8ba142643"],
-Cell[11762, 312, 183, 3, 25, "Output",ExpressionUUID->"45ac9c49-9dc0-4912-acbf-9fcf84438686"]
+Cell[11272, 296, 682, 19, 38, "Input",ExpressionUUID->"2efd7e5c-8abb-4fad-8d95-e4c8ba142643"],
+Cell[11957, 317, 183, 3, 25, "Output",ExpressionUUID->"45ac9c49-9dc0-4912-acbf-9fcf84438686"]
 }, Open  ]],
-Cell[11960, 318, 241, 5, 22, "Input",ExpressionUUID->"f48f07b1-194c-44d8-bf47-e1823a7eb628"]
+Cell[12155, 323, 241, 5, 22, "Input",ExpressionUUID->"f48f07b1-194c-44d8-bf47-e1823a7eb628"]
 }
 ]
 *)
