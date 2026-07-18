@@ -4,6 +4,12 @@ import numpy as np
 
 PORT = "COM3"
 BAUD = 1000000
+intendedSpeed = 1.800 # milliseconds
+intendedRefreshRate = 1/(intendedSpeed/1000) 
+
+print(intendedRefreshRate)
+
+printRefreshRate = np.floor(intendedRefreshRate/60)
 
 ser = serial.Serial(PORT, BAUD, timeout=0.1)
 time.sleep(3)
@@ -27,7 +33,7 @@ with open(filename_txt, "w") as f:
                 raw = np.frombuffer(data, dtype=np.int16)[0]
                 voltage = raw * V_PER_COUNT
             
-                if printCount % 5 == 0:
+                if printCount % printRefreshRate == 0:
                     print(f"{voltage:.5f}")
 
                 f.write(f"{voltage:.5f}\n")
@@ -46,5 +52,8 @@ ser.close()
 # Count samples afterward
 with open(filename_txt) as f:
     sample_count = sum(1 for _ in f)
+    
+calculatedRefreshRate = sample_count / elapsed_time    
 
-print(f"Saved {sample_count} samples to {filename_txt} at {sample_count / elapsed_time:.3f} samples/sec")
+print(f"Saved {sample_count} samples to {filename_txt} at {calculatedRefreshRate:.3f} samples/sec")
+print(f"Intended speed different from calculated speed by {intendedRefreshRate-calculatedRefreshRate/(intendedRefreshRate)*100:.6f} %")
