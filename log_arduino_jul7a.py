@@ -7,7 +7,7 @@ BAUD = 1000000
 intendedSpeed = 1.800 # milliseconds
 intendedRefreshRate = 1/(intendedSpeed/1000) 
 
-print(intendedRefreshRate)
+bottleneckThreshold = 0.1 # percent
 
 printRefreshRate = np.floor(intendedRefreshRate/60)
 
@@ -54,6 +54,13 @@ with open(filename_txt) as f:
     sample_count = sum(1 for _ in f)
     
 calculatedRefreshRate = sample_count / elapsed_time    
+refreshRatePercentDifference = ((intendedRefreshRate-calculatedRefreshRate)/intendedRefreshRate)*100
 
 print(f"Saved {sample_count} samples to {filename_txt} at {calculatedRefreshRate:.3f} samples/sec")
-print(f"Intended speed different from calculated speed by {((intendedRefreshRate-calculatedRefreshRate)/intendedRefreshRate)*100:.6f} %")
+print(f"Intended speed ({intendedRefreshRate:.3f}) different from calculated speed by {refreshRatePercentDifference:.4f} %")
+
+
+if refreshRatePercentDifference > bottleneckThreshold:
+    print("\033[91mBOTTLENECK DETECTED\033[0m")
+else:
+    print("\033[92mNO BOTTLENECK DETECTED\033[0m")
