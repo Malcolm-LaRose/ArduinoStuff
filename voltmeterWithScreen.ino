@@ -8,6 +8,10 @@
 #define TFT_RST   9
 #define TFT_DC    8
 
+#define EIGENWHITE 0xFFBB
+#define CREAM 0xFD4F
+#define PINK 0xFB53
+
 Adafruit_ADS1115 ads;
 Adafruit_ST7789 tft(TFT_CS, TFT_DC, TFT_RST);
 
@@ -49,19 +53,27 @@ void drawSpinner(byte frame) {
   const int16_t centerX = 300;
   const int16_t centerY = 18;
 
-  // Erase only the tiny spinner area.
   tft.fillRect(290, 8, 21, 21, ST77XX_BLACK);
 
-  // A tiny eight-dot rotating "loading" sparkle.
   for (byte dot = 0; dot < 8; dot++) {
-    uint16_t color = (dot == frame) ? ST77XX_YELLOW : ST77XX_BLUE;
+    int16_t x = centerX + xOffset[dot];
+    int16_t y = centerY + yOffset[dot];
 
-    tft.fillCircle(
-      centerX + xOffset[dot],
-      centerY + yOffset[dot],
-      (dot == frame) ? 2 : 1,
-      color
-    );
+    // How far this dot trails behind the moving head.
+    byte trailPosition = (frame + 8 - dot) % 8;
+
+    if (trailPosition == 0) {
+      // Head: radius 2
+      tft.fillCircle(x, y, 2, PINK);
+
+    } else if (trailPosition <= 3) {
+      // Three following dots: radius 1
+      tft.fillCircle(x, y, 1, CREAM);
+
+    } else {
+      // Remaining dots: single pixels
+      tft.drawPixel(x, y, EIGENWHITE);
+    }
   }
 }
 
@@ -81,7 +93,7 @@ void loop() {
     Serial.print(volts, 5);
     Serial.println(" V");
 
-    tft.setTextColor(ST77XX_WHITE, ST77XX_BLACK);
+    tft.setTextColor(EIGENWHITE, ST77XX_BLACK);
     tft.setTextSize(3);
     tft.setCursor(20, 65);
     tft.print(volts, 5);
@@ -92,5 +104,5 @@ void loop() {
   drawSpinner(spinnerFrame);
   spinnerFrame = (spinnerFrame + 1) % 8;
 
-  delay(17);
+  delay(16.67);
 }
