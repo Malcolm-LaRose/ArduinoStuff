@@ -25,12 +25,6 @@ void setup() {
   tft.fillScreen(ST77XX_BLACK);
   tft.setTextWrap(true);
 
-  tft.setTextColor(ST77XX_CYAN);
-  tft.setTextSize(2);
-  tft.setCursor(20, 15);
-  tft.println("ADS1115 0.256V\n 16bit Voltmeter");
-  tft.setTextWrap(false);
-
   if (!ads.begin(0x48)) {
     tft.setTextColor(ST77XX_RED, ST77XX_BLACK);
     tft.setTextSize(2);
@@ -44,6 +38,20 @@ void setup() {
 
   // +/-0.256 V range; 7.8125 uV per count
   ads.setGain(GAIN_SIXTEEN);
+  ads.setDataRate(32); // Lower sampling rate reduces noise significantly - don't go below 20/s for gradifrac purposes 32/64/128 are good
+
+  tft.setTextColor(ST77XX_CYAN);
+  tft.setTextSize(2);
+  tft.setCursor(20, 15);
+  tft.print("ADS1115 "); 
+  tft.print(ads.getFsRange(),3); 
+  tft.print("V\n 16bit ");
+  tft.print(ads.getFsRange()/.32768,2);
+  tft.println(" uV/count");
+  tft.setTextWrap(false);
+
+  // Serial.print(ads.getFsRange(),3);
+  // Serial.println(" Full scall range");
 }
 
 void drawSpinner(byte frame) {
@@ -66,10 +74,6 @@ void drawSpinner(byte frame) {
       // Head: radius 2
       tft.fillCircle(x, y, 2, PINK);
 
-    } else if (trailPosition <= 3) {
-      // Three following dots: radius 1
-      tft.fillCircle(x, y, 1, CREAM);
-
     } else {
       // Remaining dots: single pixels
       tft.drawPixel(x, y, EIGENWHITE);
@@ -81,7 +85,7 @@ void loop() {
   static int16_t previousRaw = 0;
   static byte spinnerFrame = 0;
 
-  int16_t raw = ads.readADC_SingleEnded(0);
+  int16_t raw = ads.readADC_SingleEnded(1);
 
   // Update the voltage only when its reading changes.
   if (raw != previousRaw) {
@@ -89,20 +93,21 @@ void loop() {
 
     float volts = ads.computeVolts(raw);
 
-    Serial.print("A0: ");
-    Serial.print(volts, 5);
-    Serial.println(" V");
+   // Serial.print("A0: ");
+   // Serial.print(volts, 5);
+   // Serial.println(" V");
 
     tft.setTextColor(EIGENWHITE, ST77XX_BLACK);
     tft.setTextSize(3);
     tft.setCursor(20, 65);
     tft.print(volts, 5);
     tft.print(" V");
+    
   }
 
   // Update the indicator every frame, even with an unchanged voltage.
   drawSpinner(spinnerFrame);
   spinnerFrame = (spinnerFrame + 1) % 8;
 
-  delay(16.67);
+  delay(20);
 }
